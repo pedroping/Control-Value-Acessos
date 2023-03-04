@@ -37,7 +37,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
 export class App {
   form = new FormGroup({
     rating: new FormControl(
-      { value: null, disabled: false },
+      { value: 5, disabled: false },
       Validators.required
     ),
     comment: new FormControl(''),

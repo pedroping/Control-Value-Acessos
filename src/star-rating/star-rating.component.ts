@@ -66,6 +66,7 @@ export class StarRatingComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: number) {
     this.value = value;
+    this.control.setValue(value, {emitEvent: false})
   }
 
   registerOnChange(fn: (stars: number) => void) {
