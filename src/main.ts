@@ -20,7 +20,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
       <div style="display: flex">
         <label>
           Sua avaliação:
-          <app-star-rating [formControl]="form.controls.rating"></app-star-rating>
+          <app-star-rating formControlName="rating"></app-star-rating>
         </label>
       </div>
       <div>
@@ -36,10 +36,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
 })
 export class App {
   form = new FormGroup({
-    rating: new FormControl(
-      { value: 5, disabled: false },
-      Validators.required
-    ),
+    rating: new FormControl({ value: 5, disabled: false }, Validators.required),
     comment: new FormControl(''),
   });
 

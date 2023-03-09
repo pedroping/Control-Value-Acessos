@@ -1,10 +1,11 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Injector, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
   FormControl,
+  NgControl,
 } from '@angular/forms';
 
 type Rating = { stars: number; text: string };
@@ -50,16 +51,20 @@ export class StarRatingComponent implements ControlValueAccessor, OnInit {
   ratingText: string;
   displayText = '';
   control = new FormControl(null as any);
+  ngControl: NgControl
   protected disabled: boolean;
   protected value: number;
 
-  ngOnInit() {
-    this.control.valueChanges.subscribe((val) => {
-      if (!val) return;
+  constructor (
+    private injector: Injector
+  ) {
+  
+  }
 
-      this.writeValue(val);
-      this.onChanged(val);
-    });
+  ngOnInit() {
+
+    this.ngControl = this.injector.get(NgControl);
+
   }
   onChanged: (stars: number) => void;
   onTouched: () => void;
@@ -81,12 +86,4 @@ export class StarRatingComponent implements ControlValueAccessor, OnInit {
     this.disabled = isDisabled;
   }
 
-  setRating(rating: Rating): void {
-    if (!this.disabled) {
-      this.ratingText = rating.text;
-      this.writeValue(rating.stars);
-      this.onChanged(rating.stars);
-      this.onTouched();
-    }
-  }
 }
