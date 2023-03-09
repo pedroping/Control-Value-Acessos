@@ -51,6 +51,7 @@ export class StarRatingComponent implements ControlValueAccessor, OnInit {
   ratingText: string;
   displayText = '';
   ngControl: NgControl;
+  control = new FormControl(null as any)
   protected disabled: boolean;
   protected value: number;
 
@@ -58,12 +59,21 @@ export class StarRatingComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl);
+
+    if (this.ngControl.control?.validator)
+      this.control.validator = this.ngControl.control.validator
+
+    this.control.valueChanges.subscribe(x => {
+      this.onChanged(x)
+      this.onTouched()
+    })
   }
   onChanged: (stars: number) => void;
   onTouched: () => void;
 
   writeValue(value: number) {
     this.value = value;
+    this.control.setValue(value, { emitEvent: false })
   }
 
   registerOnChange(fn: (stars: number) => void) {
